@@ -40,7 +40,10 @@ dependencies:
   cloud_firestore: ^5.2.1
   provider: ^6.1.2
   flutter_spinkit: ^5.2.1
-
+  http: ^1.2.2
+  just_audio: ^0.9.37
+  rxdart: ^0.28.0
+  audio_video_progress_bar: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +70,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/pexels-martin-péchy-5335216.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

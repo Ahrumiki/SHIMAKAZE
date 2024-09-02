@@ -5,13 +5,22 @@ class Users {
 
 class UserData {
   late final String uid;
-  late final String name;
-  late final String sugars;
-  late final int strength;
+  late String id;
+  late String title;
+  late String album;
+  late String artist;
+  late String source;
+  late String image;
+  late int duration;
 
   UserData(
       {required this.uid,
-      required this.name,
-      required this.sugars,
-      required this.strength});
+      required this.id,
+      required this.title,
+      required this.album,
+      required this.artist,
+      required this.source,
+      required this.image,
+      required this.duration
+      });
 }

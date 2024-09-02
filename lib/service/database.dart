@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fireball/models/ahru.dart';
+import 'package:fireball/models/songs.dart';
 import 'package:fireball/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,20 +11,29 @@ class DatabaseService {
   final CollectionReference ahrumikiCollection =
       FirebaseFirestore.instance.collection('Ahrumiki');
 
-  Future updateUserData(String sugars, String name, int strength) async {
-    return await ahrumikiCollection.doc(uid).set({
-      'sugars': sugars,
-      'name': name,
-      'strength': strength,
+  Future updateUserData(String id, String title, String album, String artist,
+      String source, String image, int duration) async {
+    return await ahrumikiCollection.doc(uid).collection('id').add({
+      'id': id,
+      'title': title,
+      'album': album,
+      'artist': artist,
+      'source': source,
+      'image': image,
+      'duration': duration
     });
   }
 
-  Iterable<Ahru> _ahruListFromSnapShot(QuerySnapshot snapshots) {
+  Iterable<Song> _ahruListFromSnapShot(QuerySnapshot snapshots) {
     return snapshots.docs.map((doc) {
-      return Ahru(
-        name: (doc.data() as Map<String, dynamic>)['name'] ?? ' ',
-        sugars: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
-        strength: (doc.data() as Map<String, dynamic>)['strength'] ?? 0,
+      return Song(
+        id: (doc.data() as Map<String, dynamic>)['name'] ?? ' ',
+        title: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
+        album: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
+        artist: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
+        source: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
+        image: (doc.data() as Map<String, dynamic>)['sugars'] ?? ' ',
+        duration: (doc.data() as Map<String, dynamic>)['strength'] ?? 0,
       );
     }).toList();
   }
@@ -42,13 +52,50 @@ class DatabaseService {
     var data = snapshots.data() as Map<String, dynamic>?;
     return UserData(
       uid: uid,
-      name: data!['name'],
-      sugars: data!['sugars'],
-      strength: data!['strength'],
+      id: data!['id'],
+      title: data!['title'],
+      album: data!['album'],
+      artist: data!['artist'],
+      source: data!['source'],
+      image: data!['image'],
+      duration: data!['duration'],
     );
   }
 
-  Stream<Iterable<Ahru>> get ahru {
+  Future<List<Song>> getAllDocumentsFromIdCollection() async {
+    // final CollectionReference idCollection = FirebaseFirestore.instance
+    //     .collection('Ahrumiki')
+    //     .doc(uid)
+    //     .collection('id');
+
+    // final QuerySnapshot querySnapshot = await idCollection.get();
+    QuerySnapshot querySnapshot =
+        await ahrumikiCollection.doc(uid).collection(uid).get();
+    // querySnapshot.docs.forEach((doc) {
+    List<Song> listsong = [];
+
+    //   print('Document ID: ${doc.id}');
+    //   print('Data: ${doc.data()}');
+    // });
+    listsong = querySnapshot.docs.map((doc) {
+      return Song(
+        id: doc['id'],
+        title: doc['title'],
+        album: doc['album'],
+        artist: doc['artist'],
+        source: doc['source'],
+        image: doc['image'],
+        duration: doc['duration'],
+      );
+    }).toList();
+     for (var song in listsong) {
+    print('Title: ${song.title}, Artist: ${song.artist}, Duration: ${song.duration} seconds');
+  }
+    return listsong;
+
+  }
+
+  Stream<Iterable<Song>> get ahru {
     return ahrumikiCollection.snapshots().map(_ahruListFromSnapShot);
   }
 

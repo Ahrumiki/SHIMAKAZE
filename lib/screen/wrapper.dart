@@ -1,6 +1,7 @@
 import 'package:fireball/models/user.dart';
+import 'package:fireball/screen/UI/home_song.dart';
 import 'package:fireball/screen/authenticate/authenticate.dart';
-import 'package:fireball/screen/home/home.dart';
+import 'package:fireball/screen/UI/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class Wrapper extends StatelessWidget {
   if (user == null) {
     return const Authenticate(); // Nếu user là null, hiển thị trang đăng nhập
   } else {
-    return Home(); // Nếu user không null, hiển thị trang chính
+    return const MusicApp(); // Nếu user không null, hiển thị trang chính
   }
 }
 
