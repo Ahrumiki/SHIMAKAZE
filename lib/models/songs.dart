@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 
 class Song {
   Song({
@@ -37,12 +37,11 @@ class Song {
       other is Song && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  // TODO: implement hashCode
+  
   int get hashCode => id.hashCode;
 
   @override
   String toString() {
-    // TODO: implement toString
     return 'Song{id: $this.id, title: $title, album: $album, artist: $artist, source: $source, image: $image, duration: $duration}';
   }
 }

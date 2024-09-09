@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fireball/models/user.dart';
-import 'package:fireball/service/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {

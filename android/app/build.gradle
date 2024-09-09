@@ -25,6 +25,8 @@ if (flutterVersionName == null) {
 }
 
 android {
+
+    
     namespace = "com.example.fireball"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
@@ -56,6 +58,14 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-firestore:23.0.3' // Hoặc phiên bản mới nhất của Firestore
+    
+    // Các phụ thuộc khác của dự án nếu có
 }
 
 apply plugin: 'com.android.application'

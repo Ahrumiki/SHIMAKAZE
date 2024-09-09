@@ -1,7 +1,6 @@
 import 'package:fireball/models/user.dart';
 import 'package:fireball/screen/UI/home_song.dart';
 import 'package:fireball/screen/authenticate/authenticate.dart';
-import 'package:fireball/screen/UI/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

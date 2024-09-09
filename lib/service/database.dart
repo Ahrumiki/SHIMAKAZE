@@ -1,8 +1,10 @@
+
+import 'dart:core';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fireball/models/ahru.dart';
 import 'package:fireball/models/songs.dart';
 import 'package:fireball/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_api_availability/google_api_availability.dart';
 
 class DatabaseService {
   late final String uid;
@@ -53,21 +55,43 @@ class DatabaseService {
     return UserData(
       uid: uid,
       id: data!['id'],
-      title: data!['title'],
-      album: data!['album'],
-      artist: data!['artist'],
-      source: data!['source'],
-      image: data!['image'],
-      duration: data!['duration'],
+      title: data['title'],
+      album: data['album'],
+      artist: data['artist'],
+      source: data['source'],
+      image: data['image'],
+      duration: data['duration'],
     );
   }
+
+  // Future<Either> addorRemoveFavouriteSong(String userid) {
+  //   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  //   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  //   firebaseFirestore.collection('Ahrumiki').doc(userid).collection('id').
+  // }
 
   Future<List<Song>> getAllDocumentsFromIdCollection() async {
     // final CollectionReference idCollection = FirebaseFirestore.instance
     //     .collection('Ahrumiki')
     //     .doc(uid)
     //     .collection('id');
+    GooglePlayServicesAvailability availability = await GoogleApiAvailability
+        .instance
+        .checkGooglePlayServicesAvailability();
 
+    switch (availability) {
+      case GooglePlayServicesAvailability.success:
+        print('Google Play Services are available.');
+        break;
+      case GooglePlayServicesAvailability.serviceMissing:
+        print('Google Play Services are missing.');
+        break;
+      case GooglePlayServicesAvailability.serviceVersionUpdateRequired:
+        print('Google Play Services require an update.');
+        break;
+      default:
+        print('Google Play Services have an issue: $availability');
+    }
     // final QuerySnapshot querySnapshot = await idCollection.get();
     QuerySnapshot querySnapshot =
         await ahrumikiCollection.doc(uid).collection(uid).get();
@@ -88,11 +112,11 @@ class DatabaseService {
         duration: doc['duration'],
       );
     }).toList();
-     for (var song in listsong) {
-    print('Title: ${song.title}, Artist: ${song.artist}, Duration: ${song.duration} seconds');
-  }
+    for (var song in listsong) {
+      print(
+          'Title: ${song.title}, Artist: ${song.artist}, Duration: ${song.duration} seconds');
+    }
     return listsong;
-
   }
 
   Stream<Iterable<Song>> get ahru {

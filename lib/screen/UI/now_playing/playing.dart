@@ -1,4 +1,4 @@
-import 'dart:io';
+
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:fireball/models/songs.dart';
@@ -53,7 +53,6 @@ class _NowPlayingPageState extends State<NowPlayingPage>
   late Song _song;
   late LoopMode _loopMode;
 
-  bool _isRepeat = false;
   bool _isShuffle = false;
   @override
   void initState() {

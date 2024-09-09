@@ -3,7 +3,6 @@ import 'package:fireball/models/user.dart';
 import 'package:fireball/screen/UI/now_playing/playing.dart';
 import 'package:fireball/service/database.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -142,7 +141,7 @@ class _SongItemSection extends StatelessWidget {
       title: Text(song.title),
       subtitle: Text(song.artist),
       trailing: IconButton(
-        icon: Icon(Icons.more_horiz),
+        icon: const Icon(Icons.more_horiz),
         onPressed: () {
           parent.showBottomSheet();
         },
