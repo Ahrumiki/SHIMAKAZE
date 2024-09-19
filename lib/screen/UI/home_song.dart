@@ -13,7 +13,7 @@ class MusicApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Music App',
+            title: 'Music App',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true),
@@ -35,15 +35,15 @@ class _MusicHomePageState extends State<MusicHomePage> {
     const HomeTab(),
     const DiscoveryTab(),
     const AccountTab(),
-    const settingTab()
+    const SettingTab()
   ];
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Text'),
-        ),
+        // navigationBar: const CupertinoNavigationBar(
+        //   middle: Text('Text'),
+        // ),
         child: CupertinoTabScaffold(
           tabBar: CupertinoTabBar(
             backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
@@ -94,6 +94,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+        centerTitle: true,
+      ),
       body: getBody(),
     );
   }
@@ -205,7 +209,7 @@ class _SongItemSection extends StatelessWidget {
       title: Text(song.title),
       subtitle: Text(song.artist),
       trailing: IconButton(
-        icon: Icon(Icons.more_horiz),
+        icon: const Icon(Icons.more_horiz),
         onPressed: () {
           parent.showBottomSheet();
         },

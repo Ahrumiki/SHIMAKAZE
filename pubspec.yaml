@@ -46,6 +46,8 @@ dependencies:
   audio_video_progress_bar: ^2.0.3
   google_api_availability: ^5.0.0
   either_dart: ^1.0.0
+  google_auth: ^0.0.3
+  flutter_launcher_icons: ^0.13.1
   
 dev_dependencies:
   flutter_test:
@@ -99,3 +101,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true    # Kích hoạt cho Android
+  ios: true        # Kích hoạt cho iOS
+  image_path: "assets/olli-the-polite-cat.jpg"  # Đường dẫn tới ảnh icon

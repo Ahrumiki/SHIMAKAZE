@@ -41,6 +41,10 @@ class _AccountTabPageState extends State<AccountTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Favourite'),
+        centerTitle: true,
+      ),
       body: getBody(),
     );
   }

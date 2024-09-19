@@ -1,4 +1,3 @@
-
 import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,17 +12,40 @@ class DatabaseService {
   final CollectionReference ahrumikiCollection =
       FirebaseFirestore.instance.collection('Ahrumiki');
 
-  Future updateUserData(String id, String title, String album, String artist,
-      String source, String image, int duration) async {
-    return await ahrumikiCollection.doc(uid).collection('id').add({
-      'id': id,
-      'title': title,
-      'album': album,
-      'artist': artist,
-      'source': source,
-      'image': image,
-      'duration': duration
-    });
+  // Future updateUserData(String id, String title, String album, String artist,
+  //     String source, String image, int duration) async {
+  //   return await ahrumikiCollection.doc(uid).collection('id').add({
+  //     'id': id,
+  //     'title': title,
+  //     'album': album,
+  //     'artist': artist,
+  //     'source': source,
+  //     'image': image,
+  //     'duration': duration
+  //   });
+  // }
+  Future<void> updateUserData(String id, String title, String album,
+      String artist, String source, String image, int duration) async {
+    QuerySnapshot query = await ahrumikiCollection
+        .doc(uid)
+        .collection('id')
+        .where('id', isEqualTo: id)
+        .get();
+    if (query.docs.isNotEmpty) {
+      for (QueryDocumentSnapshot doc in query.docs) {
+        await doc.reference.delete();
+      }
+    } else {
+      await ahrumikiCollection.doc(uid).collection('id').add({
+        'id': id,
+        'title': title,
+        'album': album,
+        'artist': artist,
+        'source': source,
+        'image': image,
+        'duration': duration
+      });
+    }
   }
 
   Iterable<Song> _ahruListFromSnapShot(QuerySnapshot snapshots) {
@@ -71,10 +93,10 @@ class DatabaseService {
   // }
 
   Future<List<Song>> getAllDocumentsFromIdCollection() async {
-    // final CollectionReference idCollection = FirebaseFirestore.instance
-    //     .collection('Ahrumiki')
-    //     .doc(uid)
-    //     .collection('id');
+    final CollectionReference idCollection = FirebaseFirestore.instance
+        .collection('Ahrumiki')
+        .doc(uid)
+        .collection('id');
     GooglePlayServicesAvailability availability = await GoogleApiAvailability
         .instance
         .checkGooglePlayServicesAvailability();
@@ -92,9 +114,9 @@ class DatabaseService {
       default:
         print('Google Play Services have an issue: $availability');
     }
-    // final QuerySnapshot querySnapshot = await idCollection.get();
-    QuerySnapshot querySnapshot =
-        await ahrumikiCollection.doc(uid).collection(uid).get();
+    final QuerySnapshot querySnapshot = await idCollection.get();
+    // QuerySnapshot querySnapshot =
+    //     await ahrumikiCollection.doc(uid).collection(uid).get();
     // querySnapshot.docs.forEach((doc) {
     List<Song> listsong = [];
 

@@ -61,8 +61,10 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-base:17.6.0'
-    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.1' // Phiên bản tùy theo dự án
+    implementation 'com.google.android.gms:play-services-base:18.5.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation 'com.google.firebase:firebase-firestore:23.0.3' // Hoặc phiên bản mới nhất của Firestore
     
     // Các phụ thuộc khác của dự án nếu có

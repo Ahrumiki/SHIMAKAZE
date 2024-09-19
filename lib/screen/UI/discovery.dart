@@ -6,7 +6,11 @@ class DiscoveryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return const Scaffold(
+   return  Scaffold(
+      appBar: AppBar(
+        title: const Text('Discovery'),
+        centerTitle: true,
+      ),
       body: Center(
         child: Text('Home TABBB'),
       ),

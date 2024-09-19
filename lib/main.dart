@@ -7,25 +7,21 @@ import 'package:fireball/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_api_availability/google_api_availability.dart';  
- // Import ProviderInstaller
-void main() async {
-  
+import 'package:google_api_availability/google_api_availability.dart';
+
+// Import ProviderInstaller
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    )
-  );
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
   // Hàm này để cài đặt ProviderInstaller khi khởi động
-
 
   // This widget is the root of your application.
   @override
@@ -44,9 +40,10 @@ class MyApp extends StatelessWidget {
 }
 
 Future<void> checkGooglePlayServices() async {
-  GooglePlayServicesAvailability availability = 
-      await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
-  
+  GooglePlayServicesAvailability availability = await GoogleApiAvailability
+      .instance
+      .checkGooglePlayServicesAvailability();
+
   switch (availability) {
     case GooglePlayServicesAvailability.success:
       print('Google Play Services are available.');
