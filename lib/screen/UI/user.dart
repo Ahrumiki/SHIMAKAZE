@@ -25,27 +25,47 @@ class AccountTabPage extends StatefulWidget {
 class _AccountTabPageState extends State<AccountTabPage> {
   List<Song> songs = [];
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final user = Provider.of<Users>(context);
-    DatabaseService(uid: user.uid)
-        .getAllDocumentsFromIdCollection()
-        .then((value) {
-      setState(() {
-        songs = value;
-      });
-    });
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final user = Provider.of<Users>(context);
+  //   DatabaseService(uid: user.uid)
+  //       .getAllDocumentsFromIdCollection()
+  //       .then((value) {
+  //     setState(() {
+  //       songs = value;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+    // return StreamProvider.value(
+    //     value: DatabaseService(uid: user.uid)
+    //     .getAllDocumentsFromIdCollection(),
+    //     initialData: const <Song>[],
+    //     child: Scaffold(
+    //       appBar: AppBar(
+    //         title: const Text('Favourite'),
+    //         centerTitle: true,
+    //       ),
+    //       body: getBody(),
+    //     ));
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favourite'),
-        centerTitle: true,
-      ),
-      body: getBody(),
+      appBar: AppBar(title: const Text('Favourite'), centerTitle: true),
+      body: StreamBuilder<List<Song>>(
+          stream:
+              DatabaseService(uid: user.uid).getAllDocumentsFromIdCollection(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              songs = snapshot.data!;
+              return getBody();
+            }
+            else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 

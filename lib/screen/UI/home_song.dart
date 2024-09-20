@@ -20,7 +20,7 @@ class MusicApp extends StatelessWidget {
       home: const MusicHomePage(),
       debugShowCheckedModeBanner: false,
     );
-  }
+  }     
 }
 
 class MusicHomePage extends StatefulWidget {

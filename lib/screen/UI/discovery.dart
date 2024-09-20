@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class DiscoveryTab extends StatelessWidget {
@@ -6,12 +5,12 @@ class DiscoveryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return  Scaffold(
+   return Scaffold(
       appBar: AppBar(
         title: const Text('Discovery'),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text('Home TABBB'),
       ),
     );
