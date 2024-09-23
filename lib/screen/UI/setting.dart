@@ -92,10 +92,7 @@ class _SettingTabState extends State<SettingTab> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<Iterable<Song>?>.value(
-      value: DatabaseService(uid: '').ahru,
-      initialData: const <Song>[],
-      child: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: const Text('Setting'),
           centerTitle: true,
@@ -136,7 +133,6 @@ class _SettingTabState extends State<SettingTab> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

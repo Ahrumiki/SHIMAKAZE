@@ -49,6 +49,10 @@ class _ResigterState extends State<Resigter> {
                       children: <Widget>[
                         const SizedBox(height: 20),
                         TextFormField(
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18,
+                          ),
                           decoration:
                               textInputDecorate.copyWith(hintText: 'Email'),
                           validator: (val) =>
@@ -59,6 +63,10 @@ class _ResigterState extends State<Resigter> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18,
+                          ),
                           decoration:
                               textInputDecorate.copyWith(hintText: 'Password'),
                           validator: (val) => val!.length < 6

@@ -45,6 +45,10 @@ class _SignInState extends State<SignIn> {
                 children: <Widget>[
                   const SizedBox(height: 20),
                   TextFormField(
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                    ),
                     decoration: textInputDecorate.copyWith(hintText: 'Email'),
                     validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                     onChanged: (val) {
@@ -53,6 +57,10 @@ class _SignInState extends State<SignIn> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                    ),
                     decoration:
                         textInputDecorate.copyWith(hintText: 'Password'),
                     validator: (val) => val!.length < 6

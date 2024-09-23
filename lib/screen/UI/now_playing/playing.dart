@@ -1,5 +1,3 @@
-
-
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:fireball/models/songs.dart';
 import 'package:fireball/models/user.dart';
