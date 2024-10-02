@@ -1,5 +1,4 @@
 import 'package:fireball/models/songs.dart';
-import 'package:fireball/screen/UI/discovery.dart';
 import 'package:fireball/screen/UI/now_playing/playing.dart';
 import 'package:fireball/screen/UI/setting.dart';
 import 'package:fireball/screen/UI/user.dart';
@@ -33,7 +32,6 @@ class MusicHomePage extends StatefulWidget {
 class _MusicHomePageState extends State<MusicHomePage> {
   final List<Widget> _tabs = [
     const HomeTab(),
-    const DiscoveryTab(),
     const AccountTab(),
     const SettingTab()
   ];
@@ -49,7 +47,6 @@ class _MusicHomePageState extends State<MusicHomePage> {
             backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Album'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person), label: 'Person'),
               BottomNavigationBarItem(
