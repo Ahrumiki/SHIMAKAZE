@@ -51,7 +51,12 @@ class _NowPlayingPageState extends State<NowPlayingPage>
   late Song _song;
   late LoopMode _loopMode;
 
+  List<String> namefavSong = [];
+
+  bool favourite = false;
   bool _isShuffle = false;
+
+  List<Song> favouriteSong = [];
   @override
   void initState() {
     super.initState();
@@ -67,122 +72,160 @@ class _NowPlayingPageState extends State<NowPlayingPage>
     _selectedItemIndex = widget.songs.indexOf(widget.playingSong);
   }
 
+  void _toggleFavorite() {
+    setState(() {
+      if (favourite) {
+        favourite = false;
+      } else {
+        favourite = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
     final screenwidth = MediaQuery.of(context).size.width;
     const delta = 64;
     final radius = (screenwidth - delta) / 2;
+
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: const Text("Now Playing"),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text("Now Playing"),
+        trailing: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_horiz),
         ),
-        child: Scaffold(
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(_song.album),
-              const SizedBox(height: 16),
-              const Text("_ ___ _"),
-              const SizedBox(height: 48),
-              RotationTransition(
-                turns: Tween(begin: 0.0, end: 1.0)
-                    .animate(_imageAnimationController),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(radius),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/pexels-martin-péchy-5335216.jpg',
-                    image: _song.image,
-                    width: screenwidth - delta,
-                    height: screenwidth - delta,
-                    imageErrorBuilder: (context, error, StackTrace) {
-                      return Image.asset(
-                        'assets/pexels-martin-péchy-5335216.jpg',
-                        width: screenwidth - delta,
-                        height: screenwidth - delta,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 64, bottom: 16),
-                child: SizedBox(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      ),
+      child: StreamBuilder<List<Song>>(
+          stream:
+              DatabaseService(uid: user.uid).getAllDocumentsFromIdCollection(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              favouriteSong = snapshot.data!;
+              print(widget.playingSong.title);
+              for (Song song in favouriteSong) {
+                print(song.title);
+              }
+              favourite = favouriteSong.contains(widget.playingSong);
+              if (favourite == true) {
+                print('Co hang nong');
+              } else {
+                print('cos cai dau buoi');
+              }
+              return Scaffold(
+                body: Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.share),
-                      color: Theme.of(context).colorScheme.primary,
+                    Text(_song.album),
+                    const SizedBox(height: 16),
+                    const Text("_ ___ _"),
+                    const SizedBox(height: 48),
+                    RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0)
+                          .animate(_imageAnimationController),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(radius),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/pexels-martin-péchy-5335216.jpg',
+                          image: _song.image,
+                          width: screenwidth - delta,
+                          height: screenwidth - delta,
+                          imageErrorBuilder: (context, error, StackTrace) {
+                            return Image.asset(
+                              'assets/pexels-martin-péchy-5335216.jpg',
+                              width: screenwidth - delta,
+                              height: screenwidth - delta,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          _song.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .color),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          _song.artist,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .color),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 64, bottom: 16),
+                      child: SizedBox(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.share),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                _song.title,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                _song.artist,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                _toggleFavorite();
+                                await DatabaseService(uid: user.uid)
+                                    .updateUserData(
+                                        _song.id,
+                                        _song.title,
+                                        _song.album,
+                                        _song.artist,
+                                        _song.source,
+                                        _song.image,
+                                        _song.duration);
+                                await DatabaseService(uid: user.uid)
+                                    .getAllDocumentsFromIdCollection();
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                color: favourite ? Colors.purple : Colors.grey,
+                              )),
+                        ],
+                      )),
                     ),
-                    IconButton(
-                        onPressed: () async {
-                          await DatabaseService(uid: user.uid).updateUserData(
-                            _song.id ,
-                            _song.title,
-                            _song.album,
-                            _song.artist,
-                            _song.source,
-                            _song.image,
-                            _song.duration
-                           );
-                          await DatabaseService(uid: user.uid)
-                              .getAllDocumentsFromIdCollection();
-                        },
-                        icon: const Icon(Icons.favorite_outline))
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 32, left: 24, right: 24, bottom: 16),
+                      child: _progressBar(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 32, left: 24, right: 24, bottom: 16),
+                      child: _MediaButton(),
+                    )
                   ],
                 )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 32, left: 24, right: 24, bottom: 16),
-                child: _progressBar(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 32, left: 24, right: 24, bottom: 16),
-                child: _MediaButton(),
-              )
-            ],
-          )),
-        ));
-    // ignore: dead_code
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+            ;
+          }),
+    );
   }
+
+  // ignore: dead_code
 
   @override
   void dispose() {

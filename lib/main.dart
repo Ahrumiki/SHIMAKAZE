@@ -4,6 +4,7 @@ import 'package:fireball/screen/wrapper.dart';
 import 'package:fireball/service/auth.dart';
 import 'package:fireball/theme/theme.dart';
 import 'package:fireball/theme/theme_provider.dart';
+import 'package:fireball/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
+    create: (_) => ThemeProvider(),
     child: const MyApp(),
   ));
 }
@@ -26,13 +27,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return StreamProvider<Users?>.value(
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: Provider.of<ThemeProvider>(context).themeData,
-        darkTheme: darkmode,
+        themeMode: themeProvider.themeMode,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         home: const Wrapper(),
       ),
     );

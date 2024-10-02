@@ -139,7 +139,7 @@ class DatabaseService {
   //   return listsong;
   // }
 
-    Stream<List<Song>> getAllDocumentsFromIdCollection() {
+  Stream<List<Song>> getAllDocumentsFromIdCollection() {
   final CollectionReference idCollection = FirebaseFirestore.instance
       .collection('Ahrumiki')
       .doc(uid)
@@ -158,7 +158,7 @@ class DatabaseService {
       );
     }).toList();
   });
-}
+  }
 
   Stream<Iterable<Song>> get ahru {
     return ahrumikiCollection.snapshots().map(_ahruListFromSnapShot);

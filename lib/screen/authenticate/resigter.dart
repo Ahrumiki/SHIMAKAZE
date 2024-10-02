@@ -1,7 +1,10 @@
 import 'package:fireball/service/auth.dart';
+import 'package:fireball/shared/app_bar.dart';
 import 'package:fireball/shared/constant.dart';
 import 'package:fireball/shared/loading.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Resigter extends StatefulWidget {
   final Function toggleView;
@@ -26,19 +29,8 @@ class _ResigterState extends State<Resigter> {
     return loading
         ? const Loading()
         : Scaffold(
-            backgroundColor: Colors.brown[100],
-            appBar: AppBar(
-              backgroundColor: Colors.brown[400],
-              elevation: 0.0,
-              title: const Text('Resigter'),
-              actions: <Widget>[
-                TextButton.icon(
-                    icon: const Icon(Icons.person),
-                    onPressed: () {
-                      widget.toggleView();
-                    },
-                    label: const Text('Sign in'))
-              ],
+            appBar: BasicAppbar(
+              title: SvgPicture.asset('assets/spotify.svg'),
             ),
             body: Container(
                 padding:
@@ -46,15 +38,26 @@ class _ResigterState extends State<Resigter> {
                 child: Form(
                     key: _formkey,
                     child: Column(
+                      
                       children: <Widget>[
                         const SizedBox(height: 20),
+                        const Text(
+                          'Resigter',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
                         TextFormField(
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontSize: 18,
-                          ),
-                          decoration:
-                              textInputDecorate.copyWith(hintText: 'Email'),
+                          decoration: const InputDecoration(
+                              hintText: 'Enter Email',
+                            )
+                                .applyDefaults(
+                                    Theme.of(context).inputDecorationTheme)
+                                .copyWith(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
                           validator: (val) =>
                               val!.isEmpty ? 'Enter an email' : null,
                           onChanged: (val) {
@@ -63,12 +66,15 @@ class _ResigterState extends State<Resigter> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontSize: 18,
-                          ),
-                          decoration:
-                              textInputDecorate.copyWith(hintText: 'Password'),
+                          decoration: const InputDecoration(
+                              hintText: 'Enter Email',
+                            )
+                                .applyDefaults(
+                                    Theme.of(context).inputDecorationTheme)
+                                .copyWith(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
                           validator: (val) => val!.length < 6
                               ? 'Password must be longer than 6 letter!'
                               : null,
@@ -78,30 +84,31 @@ class _ResigterState extends State<Resigter> {
                           obscureText: true,
                         ),
                         const SizedBox(height: 20),
-                        ElevatedButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                Colors.pink, // Màu nền (background)
-                          ),
-                          onPressed: () async {
-                            if (_formkey.currentState!.validate()) {
-                              setState(() {
-                                loading = true;
-                              });
-                              dynamic result = await _authService
-                                  .resigterwithEmailAndPassword(
-                                      email, password);
-                              if (result == null) {
+                        SizedBox(
+                          height: 55,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Colors.green, // Màu nền (background)
+                            ),
+                            onPressed: () async {
+                              if (_formkey.currentState!.validate()) {
                                 setState(() {
-                                  loading = false;
-                                  error = 'Please enter a valid email';
+                                  loading = true;
                                 });
+                                dynamic result = await _authService
+                                    .signInWithEmailAndPassword(
+                                        email, password);
+                                if (result == null) {
+                                  setState(() {
+                                    error = 'Account not exist';
+                                    loading = false;
+                                  });
+                                }
                               }
-                            }
-                          },
-                          child: const Text(
-                            "Sign in",
-                            style: TextStyle(color: Colors.white),
+                            }, child: const Text("Resigter",
+                              style: TextStyle(color: Colors.white),),
                           ),
                         ),
                         const SizedBox(
@@ -111,6 +118,33 @@ class _ResigterState extends State<Resigter> {
                           error,
                           style:
                               const TextStyle(color: Colors.red, fontSize: 14),
+                        ),
+                        Center(
+                          
+                          child: 
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                              text: "Have an account yet?",
+                              style: const TextStyle(
+                                  color: Colors.green, fontSize: 14),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: ' Sign in here!',
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Chuyển sang màn hình tạo tài khoản
+                                      widget.toggleView();
+                                    },
+                                ),
+                              ],
+                            ))
+                          
                         )
                       ],
                     ))),

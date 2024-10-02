@@ -61,8 +61,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
             if (snapshot.hasData) {
               songs = snapshot.data!;
               return getBody();
-            }
-            else {
+            } else {
               return const Center(child: CircularProgressIndicator());
             }
           }),

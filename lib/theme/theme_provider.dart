@@ -1,22 +1,15 @@
 import 'package:fireball/theme/theme.dart';
 import 'package:flutter/material.dart';
 
-class ThemeProvider with ChangeNotifier {
-  ThemeData _themeData = lightmode;
+class ThemeProvider extends ChangeNotifier {
+  // Biến lưu trạng thái của chế độ
+  ThemeMode _themeMode = ThemeMode.light;
 
-  ThemeData get themeData => _themeData;
+  ThemeMode get themeMode => _themeMode;
 
-  set themeData(ThemeData themeData) {
-    _themeData = themeData;
-    notifyListeners();
-  }
-
-  void toggleTheme() {
-    if (_themeData == lightmode) {
-      themeData = darkmode;
-    } else {
-      themeData = lightmode;
-    }
-    notifyListeners();
+  // Hàm chuyển đổi giữa chế độ sáng và tối
+  void toggleTheme(bool isDarkMode) {
+    _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners(); // Thông báo cho các widget nghe sự thay đổi
   }
 }

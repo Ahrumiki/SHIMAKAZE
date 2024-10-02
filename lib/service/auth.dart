@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fireball/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +26,14 @@ class AuthService {
 
   Stream<Users?> get user {
     return _auth.authStateChanges().map(_userFromFireBase);
+  }
+
+
+  Future<void> sendEmailVerify() async {
+    try {
+      await _auth.currentUser?.sendEmailVerification();
+    } on FirebaseAuthException catch(e) {
+    }
   }
 
   //resigter

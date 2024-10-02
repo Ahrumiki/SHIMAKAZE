@@ -1,6 +1,7 @@
 import 'package:fireball/models/songs.dart';
 import 'package:fireball/service/auth.dart';
 import 'package:fireball/service/database.dart';
+import 'package:fireball/theme/theme_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,8 +78,6 @@ import 'package:provider/provider.dart';
 //   }
 // }
 
-
-
 class SettingTab extends StatefulWidget {
   const SettingTab({super.key});
 
@@ -92,47 +91,50 @@ class _SettingTabState extends State<SettingTab> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: AppBar(
-          title: const Text('Setting'),
-          centerTitle: true,
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),  
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Log out',
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    await _auth.signOut();
-                  },
-                  icon: const Icon(Icons.logout_outlined),
-                ),
-              ],
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Dark Mode', style: TextStyle(fontSize: 18)),
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      print("Switch state: $isSwitched");
-                    });
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Setting'),
+        centerTitle: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Log out',
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await _auth.signOut();
+                },
+                icon: const Icon(Icons.logout_outlined),
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Dark Mode', style: TextStyle(fontSize: 18)),
+              Switch(
+                value: isDarkMode,
+                onChanged: (value) {
+                  // setState(() {
+                  //   _isDarkMode = !_isDarkMode;
+                  //   print("Switch state: $isSwitched");
+                  // });
+                  themeProvider.toggleTheme(value);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
